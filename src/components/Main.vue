@@ -10,11 +10,12 @@
             style="max-width: 20rem;"
             class="mb-2">
       <p class="card-text">
-        <b-list-group class="scroll-list">
-          <b-list-group-item v-for="(date, index) in code.date" v-bind:key='index' style="height: 30px; padding: 5px 15px;">
-            <h6>{{date}}</h6>
-          </b-list-group-item>
-        </b-list-group>
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-secondary" style="height: 30px; padding: 5px 15px;"><h6>Tweet Date</h6></li>
+          <li class="list-group-item" v-for="(date, index) in code.date" v-bind:key='index' style="height: 30px; padding: 5px 15px;">
+            {{date}}
+          </li>
+        </ul>
       </p>
     </b-card>
   </div>
@@ -55,7 +56,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.scroll-list {
+.list-group {
   overflow: auto;
   height: 100px;
   line-height: 1.5;
