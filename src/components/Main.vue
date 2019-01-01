@@ -1,15 +1,21 @@
 <template>
   <div class="main">
-    <table class="table" border="1" style='margin:0px 0px 20px 0px;'>
-      <tbody>
-        <tr v-for="item in ret" v-bind:key='item.date'>
-          <td width='15%'>{{item.date}}</td>
-          <td width='10%'>{{item.code}}</td>
-          <td width='15%'>{{item.name}}</td>
-          <td width='60%'><small>{{item.text}}</small></td>
-        </tr>
-      </tbody>
-    </table>
+    <b-card v-for="code in codes"
+            :title="code.name + '/' + code.code"
+            :img-src="code.url"
+            img-alt="Image"
+            img-top
+            tag="article"
+            style="max-width: 20rem;"
+            class="mb-2">
+      <p class="card-text">
+        <b-list-group class="scroll-list">
+          <b-list-group-item v-for="(date, index) in code.date" v-bind:key='index' style="height: 30px; padding: 5px 15px;">
+            <h6>{{date}}</h6>
+          </b-list-group-item>
+        </b-list-group>
+      </p>
+    </b-card>
   </div>
 </template>
 
@@ -20,7 +26,8 @@ export default {
   name: 'Main',
   data () {
     return {
-      ret: null
+      ret: null,
+      codes: null
     }
   },
   mounted: function () {
@@ -28,7 +35,29 @@ export default {
     axios.get(url)
       .then(ret => {
         this.ret = ret.data
+        this.codes = this.ret.reduce(
+          (obj, item) => Object.assign(
+            obj, {[item.code]: 
+              {
+                'code': item.code, 
+                'name': item.name,
+                'date': [],
+                'url': 'https://chart.yahoo.co.jp/?code=' + item.code + '.T&tm=1y&type=c&log=off&size=m&over=m25,m75&add=v,m&comp='
+              }}), {})
+
+        this.ret.forEach(item => {
+          this.codes[item.code]['date'].push(item.date)
+        })
       })
   }
 }
 </script>
+
+<style lang="css" scoped>
+.scroll-list {
+  overflow: auto;
+  height: 100px;
+  line-height: 1.5;
+  padding:0px 0;
+}
+</style>
