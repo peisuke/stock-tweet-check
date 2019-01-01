@@ -1,6 +1,7 @@
 <template>
   <div class="main">
     <b-card v-for="code in codes"
+            v-bind:key="code.code"
             :title="code.name + '/' + code.code"
             :img-src="code.url"
             img-alt="Image"
@@ -37,9 +38,9 @@ export default {
         this.ret = ret.data
         this.codes = this.ret.reduce(
           (obj, item) => Object.assign(
-            obj, {[item.code]: 
+            obj, {[item.code]:
               {
-                'code': item.code, 
+                'code': item.code,
                 'name': item.name,
                 'date': [],
                 'url': 'https://chart.yahoo.co.jp/?code=' + item.code + '.T&tm=1y&type=c&log=off&size=m&over=m25,m75&add=v,m&comp='
