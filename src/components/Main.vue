@@ -43,7 +43,7 @@ export default {
                 'code': item.code,
                 'name': item.name,
                 'date': [],
-                'url': 'https://chart.yahoo.co.jp/?code=' + item.code + '.T&tm=1y&type=c&log=off&size=m&over=m25,m75&add=v,m&comp='
+                'url': 'https://chart.yahoo.co.jp/?code=' + item.code + '.T&tm=3m&type=c&log=off&size=m&over=m25,m75&add=v,m&comp='
               }}), {})
 
         this.ret.forEach(item => {
