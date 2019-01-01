@@ -24,7 +24,7 @@ export default {
     }
   },
   mounted: function () {
-    const url = 'https://xlbittrhoj.execute-api.us-west-2.amazonaws.com/default/UrufuCheck'
+    const url = 'https://po61hlf775.execute-api.us-west-2.amazonaws.com/speculative'
     axios.get(url)
       .then(ret => {
         this.ret = ret.data
