@@ -5,7 +5,7 @@
               v-bind:key="code.code"
               :title="code.name + ' / ' + code.code"
               tag="article"
-              style="max-width: 20rem;"
+              style="max-width: 20rem;min-width: 20rem;"
               class="mb-2">
         <b-card-img :src="code.url" style="padding: 0px 0px 20px 0px;"/>
         <p class="card-text">
