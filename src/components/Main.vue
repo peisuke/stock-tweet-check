@@ -1,29 +1,19 @@
 <template>
   <div class="main">
-    <b-card-group deck>
-      <b-card v-for="code in codes"
-              v-bind:key="code.code"
-              :title="code.name + ' / ' + code.code"
-              tag="article"
-              style="max-width: 20rem;"
-              class="mb-2">
-        <b-card-img :src="code.url" style="padding: 0px 0px 20px 0px;"/>
-        <p class="card-text">
-          <ul class="list-group">
-            <li class="list-group-item list-group-item-secondary" style="height: 30px; padding: 5px 15px;"><h6>Tweet Date</h6></li>
-            <li class="list-group-item" v-for="(date, index) in code.date" v-bind:key='index' style="height: 30px; padding: 5px 0px;">
-              {{date}}
-            </li>
-          </ul>
-          <a :href="'https://kabutan.jp/stock/chart?code=' + code.code" target="_blank">株ドラゴンで確認</a>
-        </p>
-      </b-card>
-    </b-card-group>
+    <b-tabs>
+      <b-tab title="ウルフTweet" active>
+        <stock-cards v-bind:codes="codes"/>
+      </b-tab>
+      <b-tab title="新高値" active>
+        <stock-cards v-bind:codes="codes"/>
+      </b-tab>
+    </b-tabs>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import StockCards from './StockCards.vue'
 
 export default {
   name: 'Main',
@@ -35,9 +25,9 @@ export default {
   },
   mounted: function () {
     const url = 'https://po61hlf775.execute-api.us-west-2.amazonaws.com/speculative'
-    axios.get(url)
+    axios.get(url, {params: {'type': 'speculative'}})
       .then(ret => {
-        this.ret = ret.data
+        this.ret = JSON.parse(ret.data.body)
         this.codes = this.ret.reduce(
           (obj, item) => Object.assign(
             obj, {[item.code]:
@@ -52,6 +42,9 @@ export default {
           this.codes[item.code]['date'].push(item.date)
         })
       })
+  },
+  components: {
+    StockCards
   }
 }
 </script>
