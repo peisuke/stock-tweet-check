@@ -7,14 +7,15 @@
               tag="article"
               style="max-width: 20rem;"
               class="mb-2">
-        <b-card-img :src="code.url" style="padding: 10px 10px;"/>
+        <b-card-img :src="code.url" style="padding: 0px 0px 20px 0px;"/>
         <p class="card-text">
           <ul class="list-group">
             <li class="list-group-item list-group-item-secondary" style="height: 30px; padding: 5px 15px;"><h6>Tweet Date</h6></li>
-            <li class="list-group-item" v-for="(date, index) in code.date" v-bind:key='index' style="height: 30px; padding: 5px 15px;">
+            <li class="list-group-item" v-for="(date, index) in code.date" v-bind:key='index' style="height: 30px; padding: 5px 0px;">
               {{date}}
             </li>
           </ul>
+          <a :href="'https://kabutan.jp/stock/chart?code=' + code.code" target="_blank">株ドラゴンで確認</a>
         </p>
       </b-card>
     </b-card-group>
