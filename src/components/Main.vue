@@ -7,6 +7,9 @@
       <b-tab title="新高値">
         <stock-cards v-bind:codes="newHighCodes"/>
       </b-tab>
+      <b-tab title="週間値上がり率">
+        <stock-cards v-bind:codes="weeklyRankingCodes"/>
+      </b-tab>
     </b-tabs>
   </div>
 </template>
@@ -20,6 +23,7 @@ export default {
   data () {
     return {
       speclativeCodes: null,
+      weeklyRankingCodes: null,
       newHighCodes: null
     }
   },
@@ -50,6 +54,10 @@ export default {
     axios.get(url, {params: {'type': 'new-high'}})
       .then(ret => {
         this.newHighCodes = this.parse(JSON.parse(ret.data.body))
+      })
+    axios.get(url, {params: {'type': 'weekly-ranking'}})
+      .then(ret => {
+        this.weeklyRankingCodes = this.parse(JSON.parse(ret.data.body))
       })
   },
   components: {
