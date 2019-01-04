@@ -28,20 +28,20 @@ export default {
     }
   },
   methods: {
-    point: function (text, date_str) {
+    point: function (text, dateStr) {
       const d = 'Rank: 54, Ratio: 11'
       const blocks = d.split(',')
-      const block_rank = blocks[0].split(':')
-      const rank = Number(block_rank[1])
-      const rank_point = (100 - rank) / 200 + 0.5
-      
+      const blockRank = blocks[0].split(':')
+      const rank = Number(blockRank[1])
+      const rankPoint = (100 - rank) / 200 + 0.5
+
       const now = new Date()
-      const date = new Date(date_str)
+      const date = new Date(dateStr)
       const old = new Date()
       old.setDate(old.getDate() - 120)
-      const date_point = 1 - (now - date) / (now - old)
-      
-      return rank_point + date_point
+      const datePoint = 1 - (now - date) / (now - old)
+
+      return rankPoint + datePoint
     },
     parse: function (data, point) {
       var result = null
@@ -63,7 +63,7 @@ export default {
           result[item.code]['point'] += 1.0
         }
       })
-      result = Object.keys(result).map(function (key) {return result[key]})
+      result = Object.keys(result).map(function (key) { return result[key] })
       result.sort(function (lt, rt) {
         return rt.point - lt.point
       })
