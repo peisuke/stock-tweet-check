@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <loading-overlay v-if='isLoading' />
     <b-tabs>
       <b-tab title="ウルフTweet" active>
         <stock-cards v-bind:codes="speclativeCodes"/>
@@ -16,12 +17,14 @@
 
 <script>
 import axios from 'axios'
+import LoadingOverlay from './LoadingOverlay.vue'
 import StockCards from './StockCards.vue'
 
 export default {
   name: 'Main',
   data () {
     return {
+      isLoading: false,
       speclativeCodes: null,
       weeklyRankingCodes: null,
       newHighCodes: null
@@ -72,21 +75,32 @@ export default {
     }
   },
   mounted: function () {
+    this.isLoading = true
+    let promises = []
     const url = 'https://po61hlf775.execute-api.us-west-2.amazonaws.com/prod'
-    axios.get(url, {params: {'type': 'speculative'}})
-      .then(ret => {
-        this.speclativeCodes = this.parse(JSON.parse(ret.data.body), null)
-      })
-    axios.get(url, {params: {'type': 'new-high'}})
-      .then(ret => {
-        this.newHighCodes = this.parse(JSON.parse(ret.data.body), null)
-      })
-    axios.get(url, {params: {'type': 'weekly-ranking'}})
-      .then(ret => {
-        this.weeklyRankingCodes = this.parse(JSON.parse(ret.data.body), this.point)
-      })
+    promises.push(
+      axios.get(url, {params: {'type': 'speculative'}})
+        .then(ret => {
+          this.speclativeCodes = this.parse(JSON.parse(ret.data.body), null)
+        }))
+    promises.push(
+      axios.get(url, {params: {'type': 'new-high'}})
+        .then(ret => {
+          this.newHighCodes = this.parse(JSON.parse(ret.data.body), null)
+        }))
+    promises.push(
+      axios.get(url, {params: {'type': 'weekly-ranking'}})
+        .then(ret => {
+          this.weeklyRankingCodes = this.parse(JSON.parse(ret.data.body), this.point)
+        }))
+
+    axios.all(promises)
+      .finally(axios.spread((acct, perms) => {
+        this.isLoading = false
+      }))
   },
   components: {
+    LoadingOverlay,
     StockCards
   }
 }
